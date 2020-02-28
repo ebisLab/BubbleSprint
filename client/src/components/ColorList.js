@@ -27,14 +27,21 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
     .put(`colors/${colorToEdit.id}`, colorToEdit)
     .then(res=>{
-      console.log('inside save edit', res)
+      console.log('successful Edit', res.data)
     })
 
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
-    console.log('its deleting')
+    axiosWithAuth()
+    .put(`colors/${colors.id}`, color)
+    .then(res=>{
+      updateColors(colors.filter(item=> item.id !== colorToEdit))
+      console.log('successful Deletion', colors)
+    })
+
+    // console.log('its deleting')
   };
 
   return (
