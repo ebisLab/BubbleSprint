@@ -8,8 +8,8 @@ const initialColor = {
   code: { hex: "" }
 };
 
-const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
+const ColorList = ({ colors, updateColors, setDependencyState }) => {
+
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -27,6 +27,7 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
     .put(`colors/${colorToEdit.id}`, colorToEdit)
     .then(res=>{
+      setDependencyState(true)
       console.log('successful Edit', res.data)
     })
 
@@ -35,13 +36,15 @@ const ColorList = ({ colors, updateColors }) => {
   const deleteColor = color => {
     // make a delete request to delete this color
     axiosWithAuth()
-    .put(`colors/${colors.id}`, color)
+    .delete(`colors/${color.id}`, color)
     .then(res=>{
       updateColors(colors.filter(item=> item.id !== colorToEdit))
-      console.log('successful Deletion', colors)
+      setDependencyState(true)
+      console.log(colors)
+      console.log(color, 'color')
+      console.log(colorToEdit, 'color to edit')
     })
 
-    // console.log('its deleting')
   };
 
   return (
